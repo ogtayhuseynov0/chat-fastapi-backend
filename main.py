@@ -1,9 +1,18 @@
 from fastapi import FastAPI
+from modules.chat.chat_controller import chat_router
+from modules.user.user_controller import user_router
 import uvicorn
 
-app = FastAPI()
+import models
+from database import engine
 
-@app.get("/")
+models.Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+app.include_router(chat_router)
+app.include_router(user_router)
+
+@app.get("/", tags=["Root"])
 def read_root():
     return {"Hello": "World"}
 
