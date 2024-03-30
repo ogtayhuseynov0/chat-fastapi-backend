@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-from ..chat import chat_scheme
 
 
 class UserBase(BaseModel):
@@ -15,7 +14,6 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_online: bool
-    chats: list[chat_scheme.Chat]
 
     class Config:
         from_attributes = True

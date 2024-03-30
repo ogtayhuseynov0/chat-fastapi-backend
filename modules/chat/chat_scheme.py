@@ -1,12 +1,13 @@
 from pydantic import BaseModel
 
+from ..user import user_scheme
 
 class ChatBase(BaseModel):
     pass
 
 class ChatCreate(ChatBase):
     owner_id: int
-    second_user: int
+    second_user: str
     pass
 
 
