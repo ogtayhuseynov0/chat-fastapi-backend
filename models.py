@@ -1,4 +1,5 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from dataclasses import dataclass
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -26,6 +27,7 @@ class Chat(Base):
     owner = relationship("User", back_populates="chats")
     messages = relationship("Message", back_populates="chat")
 
+@dataclass
 class Message(Base):
     __tablename__ = "messages"
 
@@ -33,7 +35,10 @@ class Message(Base):
     content = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
     chat_id = Column(Integer, ForeignKey("chats.id"))
-    created_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
     owner = relationship("User", back_populates="messages")
     chat = relationship("Chat", back_populates="messages")
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 

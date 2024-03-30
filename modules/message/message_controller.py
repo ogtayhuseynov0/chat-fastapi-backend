@@ -15,7 +15,7 @@ def get_chats(chat_id: int,  db: Session = Depends(get_db)):
     return read_messages(db, chat_id)
 
 @message_router.post("/", response_model=message_scheme.Message)
-def create_user(message: message_scheme.MessageCreate, db: Session = Depends(get_db)):
-    return insert_message(db=db, message=message)
+async def create_user(message: message_scheme.MessageCreate, db: Session = Depends(get_db)):
+    return await insert_message(db=db, message=message)
 
 

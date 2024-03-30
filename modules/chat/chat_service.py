@@ -6,7 +6,7 @@ import models
 
 
 def read_chats(db: Session, user_id: int):
-    return db.query(models.Chat).filter(models.Chat.owner_id == user_id).all()
+    return db.query(models.Message).filter(models.Message.owner_id == user_id).all()
 
 
 def create_chat(db: Session, chat: chat_scheme.ChatCreate):
@@ -14,7 +14,7 @@ def create_chat(db: Session, chat: chat_scheme.ChatCreate):
     if existed_chat:
         return existed_chat
 
-    db_chat = models.Chat(**chat.model_dump())
+    db_chat = models.Message(**chat.model_dump())
     db.add(db_chat)
     db.commit()
     db.refresh(db_chat)
