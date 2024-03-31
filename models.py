@@ -21,7 +21,7 @@ class Chat(Base):
     user1ID = Column(Integer, ForeignKey("users.id"))
     user2ID = Column(Integer, ForeignKey("users.id"))
 
-    user1 = relationship("User", foreign_keys=[user2ID])
+    user1 = relationship("User", foreign_keys=[user1ID])
     user2 = relationship("User", foreign_keys=[user2ID])
 
 class Message(Base):
