@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import relationship
 
@@ -13,32 +12,27 @@ class User(Base):
     hashed_password = Column(String)
     is_online = Column(Boolean, default=False)
 
-    chats = relationship("Chat", back_populates="owner")
-    messages = relationship("Message", back_populates="owner")
-
 
 class Chat(Base):
     __tablename__ = "chats"
 
     id = Column(Integer, primary_key=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-    second_user = Column(String)
+    title = Column(String, default="Chat")
+    user1ID = Column(Integer, ForeignKey("users.id"))
+    user2ID = Column(Integer, ForeignKey("users.id"))
 
-    owner = relationship("User", back_populates="chats")
-    messages = relationship("Message", back_populates="chat")
+    user1 = relationship("User", foreign_keys=[user2ID])
+    user2 = relationship("User", foreign_keys=[user2ID])
 
-@dataclass
 class Message(Base):
     __tablename__ = "messages"
 
     id = Column(Integer, primary_key=True)
     content = Column(String)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    sender_id = Column(Integer, ForeignKey("users.id"))
+    receiver_id = Column(Integer, ForeignKey("users.id"))
     chat_id = Column(Integer, ForeignKey("chats.id"))
     created_at = Column(DateTime, default=func.now())
-    owner = relationship("User", back_populates="messages")
-    chat = relationship("Chat", back_populates="messages")
 
-    def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
+    sender = relationship('User', foreign_keys=[sender_id])
+    receiver = relationship('User', foreign_keys=[receiver_id])

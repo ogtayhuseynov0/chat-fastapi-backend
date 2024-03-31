@@ -25,8 +25,8 @@ def create_user(db: Session, user: user_scheme.UserCreate):
 def read_online(db: Session):
     return db.query(models.User).filter(models.User.is_online == True).all()
 
-def set_online(db: Session, user_name: str, is_online: bool = True):
-    db_user = db.query(models.User).filter(models.User.username == user_name).first()
+def set_online(db: Session, user_id: int, is_online: bool = True):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     
     if db_user is None:
         return None

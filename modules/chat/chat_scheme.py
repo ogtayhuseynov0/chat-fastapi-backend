@@ -3,16 +3,20 @@ from pydantic import BaseModel
 from ..user import user_scheme
 
 class ChatBase(BaseModel):
+    title: str | None = None
     pass
 
 class ChatCreate(ChatBase):
-    owner_id: int
-    second_user: str
+    user1ID: int
+    user2ID: int
     pass
 
 
-class Chat(ChatBase):
+class Chat(ChatCreate):
     id: int
+
+    user1: user_scheme.User
+    user2: user_scheme.User
 
     class Config:
         from_attributes = True
